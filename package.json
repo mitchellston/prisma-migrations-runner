@@ -10,12 +10,12 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./index.js",
+      "types": "./index.d.ts"
     },
     "./mysql": {
-      "import": "./dist/mysql/index.js",
-      "types": "./dist/mysql/index.d.ts"
+      "import": "./mysql/index.js",
+      "types": "./mysql/index.d.ts"
     }
   },
   "module": "src/index.ts",
@@ -23,11 +23,11 @@
   "scripts": {
     "build": "bun run builder.ts; bun run postbuild",
     "postbuild": "cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE",
-    "publish:major": "npm version major && git commit --m 'new major version' -a && git push; npm publish ./dist",
-    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git push; npm publish ./dist",
-    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git push; npm publish ./dist",
-    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git push; npm publish ./dist --tag beta",
-    "publish:alpha": "npm version patch && git commit --m 'new alpha version' -a && git push; npm publish ./dist --tag alpha"
+    "publish:major": "npm version major && git commit --m 'new major version' -a && git push; cd ./dist; npm publish ./",
+    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git push; cd ./dist; npm publish ./",
+    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git push; cd ./dist; npm publish ./",
+    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git push; cd ./dist; npm publish ./ --tag beta",
+    "publish:alpha": "npm version patch && git commit --m 'new beta version' -a && git push; cd ./dist; npm publish ./ --tag alpha"
   },
   "devDependencies": {
     "@types/node": "latest",

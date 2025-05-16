@@ -1,5 +1,6 @@
 import type { PrismaClientConfig } from "./prismaClientConfig";
 
+// @TODO: Get the real type
 export type PrismaClient = {
   _engine: {
     config: PrismaClientConfig;
@@ -14,4 +15,5 @@ export type PrismaClient = {
   ) => Promise<unknown>;
   $queryRawUnsafe: (query: string, ...values: any[]) => Promise<unknown>;
   $executeRawUnsafe: (query: string, ...values: any[]) => Promise<unknown>;
+  $transaction: (queries: (fn: PrismaClient) => Promise<void>) => Promise<void>;
 };

@@ -43,39 +43,39 @@ export async function runMigrations(
 
     // Execute the migrations sql
     const path = `${migrationsPath}/${migration}/migration.sql`;
+    let statements = ""; // Used to create the checksum
+    // Execute the migrations line by line
+    await prisma.$transaction(async (tx) => {
+      const fileStream = fs.createReadStream(path);
+      const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+      });
 
-    // @TODO: Make this safer/ better
-    // Read file line by line
-    const fileStream = fs.createReadStream(path);
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity,
+      let statement = "";
+
+      for await (const line of rl) {
+        // Skip comments and empty lines
+        if (
+          line.startsWith("--") ||
+          line.startsWith("/*") ||
+          line.trim() === ""
+        ) {
+          continue;
+        }
+
+        statement += line + " ";
+
+        // If the line ends with a semicolon, execute the statement
+        if (line.trim().endsWith(";")) {
+          await tx.$executeRawUnsafe(statement);
+          statements += statement;
+
+          // Reset statement
+          statement = "";
+        }
+      }
     });
-
-    let statements = "";
-    let statement = "";
-
-    for await (const line of rl) {
-      // Skip comments and empty lines
-      if (
-        line.startsWith("--") ||
-        line.startsWith("/*") ||
-        line.trim() === ""
-      ) {
-        continue;
-      }
-
-      statement += line + " ";
-
-      // If the line ends with a semicolon, execute the statement
-      if (line.trim().endsWith(";")) {
-        await prisma.$executeRawUnsafe(statement);
-        statements += statement;
-
-        // Reset statement
-        statement = "";
-      }
-    }
 
     // Update the migration table
     const getFinishedDateTime = new Date();

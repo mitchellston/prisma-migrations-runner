@@ -13,4 +13,5 @@ export type PrismaClient = {
     ...values: any[]
   ) => Promise<unknown>;
   $queryRawUnsafe: (query: string, ...values: any[]) => Promise<unknown>;
+  $executeRawUnsafe: (query: string, ...values: any[]) => Promise<unknown>;
 };

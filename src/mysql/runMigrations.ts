@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
-import fs from "fs/promises";
+import fs, { stat } from "fs";
+import readline from "readline";
 import type { PrismaClient } from "../types/PrismaClient";
 import { getDefaultMigrationsPath } from "../utils/getDefaultPaths";
 import { getMigrations } from "./getMigrations";
@@ -42,12 +43,43 @@ export async function runMigrations(
 
     // Execute the migrations sql
     const path = `${migrationsPath}/${migration}/migration.sql`;
-    const migrationSql = await fs.readFile(path, "utf8");
-    await prisma.$queryRawUnsafe(migrationSql);
+
+    // @TODO: Make this safer/ better
+    // Read file line by line
+    const fileStream = fs.createReadStream(path);
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+
+    let statements = "";
+    let statement = "";
+
+    for await (const line of rl) {
+      // Skip comments and empty lines
+      if (
+        line.startsWith("--") ||
+        line.startsWith("/*") ||
+        line.trim() === ""
+      ) {
+        continue;
+      }
+
+      statement += line + " ";
+
+      // If the line ends with a semicolon, execute the statement
+      if (line.trim().endsWith(";")) {
+        await prisma.$executeRawUnsafe(statement);
+        statements += statement;
+
+        // Reset statement
+        statement = "";
+      }
+    }
 
     // Update the migration table
     const getFinishedDateTime = new Date();
-    const checksum = generateChecksum(migrationSql);
+    const checksum = generateChecksum(statements);
     await prisma.$executeRaw`INSERT INTO _prisma_migrations (id, checksum, migration_name, started_at, finished_at, applied_steps_count) VALUES (${uuid}, ${checksum}, ${migration}, ${getStartedDateTime}, ${getFinishedDateTime}, 1);`;
   }
 

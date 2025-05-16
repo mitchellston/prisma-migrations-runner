@@ -1,0 +1,16 @@
+import type { PrismaClientConfig } from "./prismaClientConfig";
+
+export type PrismaClient = {
+  _engine: {
+    config: PrismaClientConfig;
+  };
+  $executeRaw: <T extends TemplateStringsArray>(
+    query: T,
+    ...values: any[]
+  ) => Promise<number>;
+  $queryRaw: <T extends TemplateStringsArray>(
+    query: T,
+    ...values: any[]
+  ) => Promise<unknown>;
+  $queryRawUnsafe: (query: string, ...values: any[]) => Promise<unknown>;
+};

@@ -1,0 +1,38 @@
+import fs from "fs";
+import type { PrismaClient } from "../types/PrismaClient";
+import { getDefaultMigrationsPath } from "../utils/getDefaultPaths";
+import { createMigrationTable } from "./sql/createMigrationTable";
+import { getLastMigration } from "./utils/getLastMigration";
+
+/**
+ * This function will return an array of migration files that have not been run yet
+ */
+export async function getMigrations(
+  prisma: PrismaClient,
+  migrationsPath?: string
+) {
+  await createMigrationTable(prisma);
+  const lastMigration = await getLastMigration(prisma);
+  if (!migrationsPath) {
+    migrationsPath = getDefaultMigrationsPath(prisma);
+  }
+  const files = fs
+    .readdirSync(migrationsPath)
+    .filter((file) => file !== "migration_lock.toml")
+    .sort();
+
+  if (
+    lastMigration &&
+    typeof lastMigration === "object" &&
+    "migration_name" in lastMigration
+  ) {
+    const index = files.findIndex(
+      (file) => file == lastMigration.migration_name
+    );
+    if (index !== -1) {
+      return files.slice(index + 1);
+    }
+  }
+
+  return files;
+}

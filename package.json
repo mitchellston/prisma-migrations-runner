@@ -43,5 +43,6 @@
     "prisma",
     "migrations",
     "cli"
-  ]
+  ],
+  "version": "0.0.1"
 }

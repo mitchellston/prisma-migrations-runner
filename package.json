@@ -12,16 +12,20 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./mysql": {
+      "import": "./dist/mysql/index.js",
+      "types": "./dist/mysql/index.d.ts"
     }
   },
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "build": "bun run builder.ts",
+    "build": "bun run builder.ts; bun run postbuild",
+    "postbuild": "cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE",
     "publish": "npm publish ./dist",
     "publish:beta": "npm publish --tag beta ./dist",
-    "publish:alpha": "npm publish --tag alpha ./dist",
-    "prepublish": "bun install; bun run build; cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE"
+    "publish:alpha": "npm publish --tag alpha ./dist"
   },
   "devDependencies": {
     "@types/node": "latest",

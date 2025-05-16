@@ -9,18 +9,29 @@ import { getLastMigration } from "./utils/getLastMigration";
  */
 export async function getMigrations(
   prisma: PrismaClient,
-  migrationsPath?: string
+  settings?: {
+    migrationsPath?: string;
+  }
 ) {
+  // Create migration table if it doesn't exist
   await createMigrationTable(prisma);
+
+  // Get last applied migration
   const lastMigration = await getLastMigration(prisma);
+
+  // Apply settings
+  let migrationsPath = settings?.migrationsPath;
   if (!migrationsPath) {
     migrationsPath = getDefaultMigrationsPath(prisma);
   }
+
+  // Get migrations from file system
   const files = fs
     .readdirSync(migrationsPath)
     .filter((file) => file !== "migration_lock.toml")
     .sort();
 
+  // Remove all migrations that have already been applied
   if (
     lastMigration &&
     typeof lastMigration === "object" &&

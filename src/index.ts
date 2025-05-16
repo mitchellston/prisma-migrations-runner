@@ -5,11 +5,13 @@ import { runMigrations as runMysqlMigrations } from "./mysql/runMigrations";
 
 export async function getMigrations(
   prisma: PrismaClient,
-  migrationsPath?: string
+  settings?: {
+    migrationsPath?: string;
+  }
 ) {
   const provider = getPrismaProvider(prisma);
   if (provider === "mysql") {
-    return await getMysqlMigrations(prisma, migrationsPath);
+    return await getMysqlMigrations(prisma, settings);
   } else {
     console.error(
       "Getting migrations not supported for this provider, please contibute or use the prisma cli"
@@ -19,12 +21,14 @@ export async function getMigrations(
 
 export async function runMigrations(
   prisma: PrismaClient,
-  migrationsPath?: string,
-  migrations?: string[]
+  settings?: {
+    migrationsPath?: string;
+    migrations?: string[];
+  }
 ) {
   const provider = getPrismaProvider(prisma);
   if (provider === "mysql") {
-    return await runMysqlMigrations(prisma, migrationsPath, migrations);
+    return await runMysqlMigrations(prisma, settings);
   } else {
     console.error(
       "Running migrations not supported for this provider, please contibute or use the prisma cli"

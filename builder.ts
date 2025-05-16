@@ -1,7 +1,7 @@
 import dts from "bun-plugin-dts";
 
 await Bun.build({
-  entrypoints: ["./src/index.ts"],
+  entrypoints: ["./src/index.ts", "./src/mysql/index.ts"],
   outdir: "./dist",
   target: "node",
   splitting: true,

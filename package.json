@@ -22,12 +22,12 @@
   "type": "module",
   "scripts": {
     "build": "bun run builder.ts; bun run postbuild",
-    "postbuild": "cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE",
-    "publish:major": "npm version major && git commit --m 'new major version' -a && git push; cd ./dist; npm publish ./",
-    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git push; cd ./dist; npm publish ./",
-    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git push; cd ./dist; npm publish ./",
-    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git push; cd ./dist; npm publish ./ --tag beta",
-    "publish:alpha": "npm version patch && git commit --m 'new beta version' -a && git push; cd ./dist; npm publish ./ --tag alpha"
+    "postbuild": "cp ./README.md ./dist/README.md; cp ./LICENSE ./dist/LICENSE",
+    "publish:major": "npm version major && git commit --m 'new major version' -a && git push; cp ./package.json ./dist/package.json; cd ./dist; npm publish ./",
+    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git push; cp ./package.json ./dist/package.json; cd ./dist; npm publish ./",
+    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git push; cp ./package.json ./dist/package.json; cd ./dist; npm publish ./",
+    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git push; cp ./package.json ./dist/package.json; cd ./dist; npm publish ./ --tag beta",
+    "publish:alpha": "npm version patch && git commit --m 'new beta version' -a && git push; cp ./package.json ./dist/package.json; cd ./dist; npm publish ./ --tag alpha"
   },
   "devDependencies": {
     "@types/node": "latest",

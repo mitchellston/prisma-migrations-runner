@@ -1,6 +1,10 @@
 {
   "name": "prisma-migrations-runner",
   "description": "Run Prisma migrations in code without the CLI",
+  "homepage": "https://github.com/mitchellston/prisma-migrations-runner",
+  "bugs": {
+    "url": "https://github.com/mitchellston/prisma-migrations-runner/issues"
+  },
   "author": {
     "name": "Mitchellston"
   },
@@ -13,7 +17,11 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "build": "bun run builder.ts"
+    "build": "bun run builder.ts",
+    "publish": "npm publish ./dist",
+    "publish:beta": "npm publish --tag beta ./dist",
+    "publish:alpha": "npm publish --tag alpha ./dist",
+    "prepublish": "bun install; bun run build; cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE"
   },
   "devDependencies": {
     "@types/node": "latest",

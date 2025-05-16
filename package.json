@@ -23,11 +23,11 @@
   "scripts": {
     "build": "bun run builder.ts; bun run postbuild",
     "postbuild": "cp ./README.md ./dist/README.md; cp ./package.json ./dist/package.json; cp ./LICENSE ./dist/LICENSE",
-    "publish:major": "npm version major && git commit --m 'new major version' -a && git pushnpm publish ./dist",
-    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git pushnpm publish ./dist",
-    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git pushnpm publish ./dist",
-    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git pushnpm publish --tag beta ./dist",
-    "publish:alpha": " npm version patch && git commit --m 'new alpha version' -a && git pushnpm publish --tag alpha ./dist"
+    "publish:major": "npm version major && git commit --m 'new major version' -a && git push; npm publish ./dist",
+    "publish:minor": "npm version minor && git commit --m 'new minor version' -a && git push; npm publish ./dist",
+    "publish:patch": "npm version patch && git commit --m 'new patch version' -a && git push; npm publish ./dist",
+    "publish:beta": "npm version patch && git commit --m 'new beta version' -a && git push; npm publish ./dist --tag beta",
+    "publish:alpha": "npm version patch && git commit --m 'new alpha version' -a && git push; npm publish ./dist --tag alpha"
   },
   "devDependencies": {
     "@types/node": "latest",

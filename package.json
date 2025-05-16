@@ -1,5 +1,5 @@
 {
-  "name": "prisma-migrations-runner",
+  "name": "@repo/prisma-migrations-runner",
   "description": "Run Prisma migrations in code without the CLI",
   "homepage": "https://github.com/mitchellston/prisma-migrations-runner",
   "bugs": {

@@ -30,7 +30,7 @@ export async function runMigrations(
   }
 
   let migrationsPath = settings?.migrationsPath;
-  if (!migrations) {
+  if (!migrationsPath) {
     migrationsPath = getDefaultMigrationsPath(prisma);
   }
 
